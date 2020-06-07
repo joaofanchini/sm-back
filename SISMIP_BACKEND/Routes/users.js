@@ -14,7 +14,7 @@ var createUserToken = (Userid) =>{
 
 //FUNÇÕES PRICIPAIS
 
-router.get('/', async (req,res) => {
+router.get('/', auth, async (req,res) => {
     
     try{       
         
@@ -74,7 +74,7 @@ router.get('/auth', async (req,res) => {
     } 
 });
 
-router.post('/create', async (req,res) => {
+router.post('/create', auth, async (req,res) => {
 
     const {username, name, password} = req.body;
 
