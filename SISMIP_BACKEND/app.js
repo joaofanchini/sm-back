@@ -1,5 +1,5 @@
-const app = express();
 const express = require('express');
+const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const config = require('./config/config.js');
@@ -37,7 +37,7 @@ const UsersRoute = require('./Routes/users.js');
 app.use('/', IndexRoute);
 app.use('/users', UsersRoute);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Aplicação inciada");
 });
 
