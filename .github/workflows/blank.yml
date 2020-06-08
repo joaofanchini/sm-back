@@ -15,7 +15,7 @@ on:
 jobs:
   teste:
     name: Teste
-    runs-on: ubuntu-lastest
+    runs-on: [self-hosted, linux]
     defaults:
       run:
         working-directory: ./SISMIP_BACKEND
