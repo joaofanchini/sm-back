@@ -14,10 +14,6 @@ var createUserToken = (Userid) => {
 
 //FUNÇÕES PRICIPAIS
 
-router.get('/version', (req, res) => {
-    res.json({ Version: "0.0.1" });
-})
-
 router.get('/', auth, async (req, res) => {
 
     try {
