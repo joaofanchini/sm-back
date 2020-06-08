@@ -1,6 +1,10 @@
 name: SISMIP-CI
 
-on: [push]
+on: 
+  push:
+    branches: develop
+    paths: 
+      - SISMIP_BACKEND/*
 
 jobs:
   build:
