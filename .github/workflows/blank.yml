@@ -24,14 +24,15 @@ jobs:
       NODE_ENV: dev  
       MONGO_URL: mongo_url
     steps:
-      - name: Init pre set
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Init change branch
+        uses: actions/checkout@v2
+      - name: Change set up
+        uses: actions/setup-node@v1
         with:
           node-version: '12'
-      - run: npm install
-      - run: npm build --if-present
-      - run: npm start --if-present
-        
-
- 
+      - name: Install dependencies
+        run: npm install 
+      - name: Build if present
+        run: npm build --if-present 
+      - name: Start if present
+        run: npm start --if-present
