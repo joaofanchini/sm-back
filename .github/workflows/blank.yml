@@ -13,9 +13,9 @@ on:
 #     paths:
 #       - SISMIP_BACKEND/**
 jobs:
-  teste:
+  build:
     name: Teste
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./SISMIP_BACKEND
