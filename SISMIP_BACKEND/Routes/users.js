@@ -12,17 +12,6 @@ var createUserToken = (Userid) =>{
     return jwt.sign({id: Userid}, config.jwt_pass, {expiresIn: config.jwt_expires_in});
 }
 
-var passEncripited = (Userpassword) =>{
-
-    const saltRounds = 10;
-
-    const salt = bcrypt.genSaltSync(saltRounds);
-
-    const hash = bcrypt.hashSync(Userpassword, salt);
-
-    return hash;
-}
-
 //FUNÇÕES PRICIPAIS
 
 router.get('/', auth, async (req,res) => {
@@ -42,13 +31,13 @@ router.get('/', auth, async (req,res) => {
     } 
 });
 
-router.get('/username', auth, async (req,res) => {
+router.get('/email', auth, async (req,res) => {
     
-    const {username, password} = req.body;
+    const {email, password} = req.body;
 
     try{       
         
-        var user = await User.findOne({username});
+        var user = await User.findOne({email});
         
         return res.send(user);
     }
@@ -60,15 +49,15 @@ router.get('/username', auth, async (req,res) => {
 });
 
 
-router.get('/auth', async (req,res) => {
+router.post('/auth', async (req,res) => {
     
-    const {username, password} = req.body;
+    const {email, password} = req.body;
 
-    if (!username || !password) return res.status(400).send ({error: 'Dados inseridos invalidos e/ou insuficientes'});
+    if (!email || !password) return res.status(400).send ({error: 'Dados inseridos invalidos e/ou insuficientes'});
     
     try{       
         
-        var user = await User.findOne({username}).select('+password');
+        var user = await User.findOne({email}).select('+password');
         if (!user) return res.status(400).send ({error: 'Usuário não cadastrado'});
 
         var pass = bcrypt.compareSync(password, user.password);     
@@ -87,17 +76,13 @@ router.get('/auth', async (req,res) => {
 
 router.post('/create', auth, async (req,res) => {
 
-    const {username, name, password} = req.body;
+    const {email, name, password} = req.body;
 
-    if (!username || !name || !password) return res.status(400).send ({error: 'Dados inseridos invalidos e/ou insuficientes'});
+    if (!email || !name || !password) return res.status(400).send ({error: 'Dados inseridos invalidos e/ou insuficientes'});
 
     try{
         
-        if (await User.findOne({username})) return res.status(400).send ({error: 'Usuário já cadastrado'});
-        
-        //var pass = await passEncripited(req.body.password);
-
-        //req.body.password = pass;
+        if (await User.findOne({email})) return res.status(400).send ({error: 'Usuário já cadastrado'});
 
         var user = await User.create(req.body);
 
