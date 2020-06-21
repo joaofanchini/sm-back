@@ -42,9 +42,13 @@ app.use(cors());
 const IndexRoute = require('./Routes/index.js');
 const UsersRoute = require('./Routes/users.js');
 
+const port = process.env.PORT || 3000;
+
 app.use('/', IndexRoute);
 app.use('/users', UsersRoute);
 
-app.listen(process.env.PORT || 3000);
+app.listen(port, () => {
+  console.log(`Aplicação iniciada na porta :${port}`);
+});
 
 module.exports = app;
