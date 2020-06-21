@@ -6,21 +6,24 @@ const config = () =>{
             return{
                 bd_string: 'mongodb+srv://user_adm:TjZQmAcPQm5HxNlY@sismip-db-iyerz.gcp.mongodb.net/dev?retryWrites=true',
                 jwt_pass: 'zJ$&FvsWlE',
-                jwt_expires_in: '1h'
+                jwt_expires_in: '1h',
+                bcrypt_saltRounds: 10
             }
 
         case 'hml':
             return{
                 bd_string: 'mongodb+srv://user_adm:TjZQmAcPQm5HxNlY@sismip-db-iyerz.gcp.mongodb.net/hml?retryWrites=true',
                 jwt_pass: 'zJ$&FvsWlE',
-                jwt_expires_in: '5h'               
+                jwt_expires_in: '5h',
+                bcrypt_saltRounds: 10               
             }
 
         case 'prod':
             return{
                 bd_string: 'mongodb+srv://user_adm:TjZQmAcPQm5HxNlY@sismip-db-iyerz.gcp.mongodb.net/prod?retryWrites=true',
                 jwt_pass: 'zJ$&FvsWlE',
-                jwt_expires_in: '24h'
+                jwt_expires_in: '24h',
+                bcrypt_saltRounds: 10
             }
         break;
     }

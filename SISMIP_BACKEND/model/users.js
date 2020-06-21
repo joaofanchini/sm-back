@@ -1,6 +1,7 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
+const config = require('../config/config.js');
 
 const UserSchema = new Schema({
       email: {type: String, required: true, unique: true, lowercase: true},
@@ -13,11 +14,10 @@ const UserSchema = new Schema({
 UserSchema.pre('save', function (next){
       
       const user = this;
-      const saltRounds = 10;
 
       if(!user.isModified('password')) return next();
 
-      let salt = bcrypt.genSaltSync(saltRounds);
+      let salt = bcrypt.genSaltSync(config.bcrypt_saltRounds);
   
       let hash = bcrypt.hashSync(user.password, salt);
 
