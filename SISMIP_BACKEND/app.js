@@ -46,6 +46,8 @@ const port = process.env.PORT || 3000;
 
 app.use('/', IndexRoute);
 app.use('/users', UsersRoute);
+app.use('/bugs', BugsRoute);
+app.use('/pesticides', PesticidesRoute);
 
 app.listen(port, () => {
   console.log(`Aplicação iniciada na porta :${port}`);
