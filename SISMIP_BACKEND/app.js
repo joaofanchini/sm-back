@@ -41,6 +41,8 @@ app.use(cors());
 //ROTAS
 const IndexRoute = require('./Routes/index.js');
 const UsersRoute = require('./Routes/users.js');
+const BugsRoute = require('./Routes/bugs.js');
+const PesticidesRoute = require('./Routes/pesticides.js');
 
 const port = process.env.PORT || 3000;
 
