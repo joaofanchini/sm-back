@@ -13,7 +13,7 @@ const PlatationsSchema = new Schema({
     state: { type: String },
     zipCode: { type: String },
     geolocation: {
-      type: { type: String, enum: ['Point'] },
+      type: { type: String, enum: ['Point'], default: 'Point' },
       coordinates: { type: [Number] }
     }
   },

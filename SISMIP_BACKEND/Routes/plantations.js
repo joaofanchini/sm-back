@@ -43,13 +43,16 @@ router.post('/create', auth, async (req, res) => {
   if (
     !name ||
     !area ||
-    !location ||
-    !location.street ||
-    !location.number ||
-    !location.neighborhood ||
-    !location.city ||
-    !location.state ||
-    !location.zipCode
+    (!location &&
+      (!location.street ||
+        !location.number ||
+        !location.neighborhood ||
+        !location.city ||
+        !location.state ||
+        !location.zipCode ||
+        !location.geolocation ||
+        !location.geolocation.coordinates ||
+        !location.geolocation.coordinates.size != 2))
   ) {
     return res.status(400).json({
       error: 'Dados inseridos invalidos e/ou insuficientes'
@@ -73,6 +76,47 @@ router.post('/create', auth, async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: 'Erro no Cadastro de Plantação' });
+  }
+});
+
+router.post('/update', auth, async (req, res) => {
+  const { name, area, location } = req.body;
+
+  if (
+    !name ||
+    !area ||
+    (!location &&
+      (!location.street ||
+        !location.number ||
+        !location.neighborhood ||
+        !location.city ||
+        !location.state ||
+        !location.zipCode ||
+        !location.geolocation ||
+        !location.geolocation.coordinates ||
+        !location.geolocation.coordinates.size != 2))
+  ) {
+    return res.status(400).json({
+      error: 'Dados inseridos invalidos e/ou insuficientes'
+    });
+  }
+  try {
+    var plantation = await Plagues.updateOne(
+      { user_id: req.auth_data.userId, name },
+      {
+        $set: {
+          area: area,
+          location: location
+        }
+      }
+    );
+
+    if (plantation.n == 0)
+      return res.status(410).json({ message: 'Plantação Inexistente' });
+
+    return res.status(200).json({ message: 'Plantação Alterado' });
+  } catch (err) {
+    return res.status(500).json({ error: 'Erro ao Alterar Plantação' });
   }
 });
 
