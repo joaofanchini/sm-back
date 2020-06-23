@@ -1,3 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth.js');
+
+//FUNÇÕES PRINCIPAIS
+
+router.get('/', auth, async (req, res) => {});
