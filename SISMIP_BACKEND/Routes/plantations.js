@@ -139,7 +139,7 @@ router.post('/delete', auth, async (req, res) => {
     if (plantation.deletedCount == 0)
       return res.status(410).json({ message: 'Plantação Inexistente' });
 
-    return res.status(200).json({ message: 'Plantação Excluído' });
+    return res.status(200).json({ message: 'Plantação Excluída' });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: 'Erro ao Excluir Plantação' });
