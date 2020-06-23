@@ -33,6 +33,7 @@ router.get('/plantation/:name', auth, async (req, res) => {
 
     return res.json(bug);
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro na Consulta de Plantações' });
   }
 });
@@ -101,7 +102,7 @@ router.post('/update', auth, async (req, res) => {
     });
   }
   try {
-    var plantation = await Plagues.updateOne(
+    var plantation = await Plantations.updateOne(
       { user_id: req.auth_data.userId, name },
       {
         $set: {
@@ -116,6 +117,7 @@ router.post('/update', auth, async (req, res) => {
 
     return res.status(200).json({ message: 'Plantação Alterado' });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro ao Alterar Plantação' });
   }
 });
