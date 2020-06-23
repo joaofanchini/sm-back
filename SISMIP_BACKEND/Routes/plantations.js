@@ -56,13 +56,13 @@ router.post('/create', auth, async (req, res) => {
         !location.geolocation.coordinates.size != 2))
   ) {
     return res.status(400).json({
-      error: 'Dados inseridos invalidos e/ou insuficientes'
+      message: 'Dados inseridos invalidos e/ou insuficientes'
     });
   }
 
   try {
     if (await Plantations.findOne({ user_id: req.auth_data.userId, name }))
-      return res.status(400).json({ error: 'Plantação já cadastrada' });
+      return res.status(400).json({ message: 'Plantação já cadastrada' });
 
     let plantationEntity = {
       user_id: req.auth_data.userId,
@@ -98,7 +98,7 @@ router.post('/update', auth, async (req, res) => {
         !location.geolocation.coordinates.size != 2))
   ) {
     return res.status(400).json({
-      error: 'Dados inseridos invalidos e/ou insuficientes'
+      message: 'Dados inseridos invalidos e/ou insuficientes'
     });
   }
   try {
@@ -119,6 +119,30 @@ router.post('/update', auth, async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: 'Erro ao Alterar Plantação' });
+  }
+});
+
+router.post('/delete', auth, async (req, res) => {
+  const { name } = req.body;
+
+  if (!name)
+    res
+      .status(400)
+      .json({ error: 'Dados inseridos invalidos e/ou insuficientes' });
+
+  try {
+    var plantation = await Plantations.deleteOne({
+      user_id: req.auth_data.userId,
+      name
+    });
+
+    if (plantation.deletedCount == 0)
+      return res.status(410).json({ message: 'Plantação Inexistente' });
+
+    return res.status(200).json({ message: 'Plantação Excluído' });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Erro ao Excluir Plantação' });
   }
 });
 
