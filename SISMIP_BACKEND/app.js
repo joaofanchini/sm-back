@@ -41,14 +41,14 @@ app.use(cors());
 //ROTAS
 const IndexRoute = require('./Routes/index.js');
 const UsersRoute = require('./Routes/users.js');
-const BugsRoute = require('./Routes/bugs.js');
+const PlaguesRoute = require('./Routes/plagues.js');
 const PesticidesRoute = require('./Routes/pesticides.js');
 
 const port = process.env.PORT || 3000;
 
 app.use('/', IndexRoute);
 app.use('/users', UsersRoute);
-app.use('/bugs', BugsRoute);
+app.use('/plagues', PlaguesRoute);
 app.use('/pesticides', PesticidesRoute);
 
 app.listen(port, () => {

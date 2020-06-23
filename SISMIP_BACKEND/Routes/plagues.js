@@ -7,9 +7,7 @@ const auth = require('../middleware/auth.js');
 
 router.get('/', auth, async (req, res) => {
   try {
-    var bug = await Plagues.find({})
-      .where('user_id')
-      .equals(req.auth_data);
+    var bug = await Plagues.find({ user_id: req.auth_data.userId });
 
     if (bug.length == 0)
       return res.status(404).send({ message: 'Nenhum Inseto Cadastrado' });
@@ -20,13 +18,11 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-router.get('/plague', auth, async (req, res) => {
-  const { name } = req.body;
+router.get('/plague/:name', auth, async (req, res) => {
+  let name = req.params.name;
 
   try {
-    var bug = await Plagues.findOne({ name })
-      .where('user_id')
-      .equals(req.auth_data);
+    var bug = await Plagues.findOne({ user_id: req.auth_data.userId, name });
 
     if (!bug)
       return res.status(404).send({ message: 'Nenhum Inseto Encontrado' });
@@ -41,35 +37,39 @@ router.post('/create', auth, async (req, res) => {
   const {
     name,
     description,
-    na_fase_r,
-    na_fase_v,
-    initial_fase,
-    end_fase
+    na_phase_r,
+    na_phase_v,
+    initial_phase,
+    end_phase
   } = req.body;
 
   if (
     !name ||
     !description ||
-    !na_fase_r ||
-    !na_fase_v ||
-    !initial_fase ||
-    !end_fase
+    !na_phase_r ||
+    !na_phase_v ||
+    !initial_phase ||
+    !end_phase
   ) {
     return res
       .status(400)
       .send({ error: 'Dados inseridos invalidos e/ou insuficientes' });
   }
   try {
-    if (
-      await Plagues.findOne({ name })
-        .where('user_id')
-        .equals(req.auth_data)
-    )
+    if (await Plagues.findOne({ user_id: req.auth_data.userId, name }))
       return res.status(400).send({ error: 'Inseto já cadastrado' });
 
-    var bug = await Plagues.create(req.body)
-      .where('user_id')
-      .equals(req.auth_data);
+    let bugDto = {
+      user_id: req.auth_data.userId,
+      name,
+      description,
+      na_phase_r,
+      na_phase_v,
+      initial_phase,
+      end_phase
+    };
+
+    var bug = await Plagues.create(bugDto);
 
     return res.status(201).send(bug);
   } catch (err) {
@@ -81,9 +81,7 @@ router.post('/delete', auth, async (req, res) => {
   const { name } = req.body;
 
   try {
-    var bug = await Plagues.deleteOne({ name })
-      .where('user_id')
-      .equals(req.auth_data);
+    var bug = await Plagues.deleteOne({ user_id: req.auth_data.userId, name });
 
     if (bug.deletedCount == 0)
       return res.status(410).send({ message: 'Inseto Inexistente' });
@@ -98,20 +96,20 @@ router.post('/update', auth, async (req, res) => {
   const {
     name,
     description,
-    na_fase_r,
-    na_fase_v,
-    initial_fase,
-    end_fase,
+    na_phase_r,
+    na_phase_v,
+    initial_phase,
+    end_phase,
     image
   } = req.body;
 
   if (
     !name ||
     !description ||
-    !na_fase_r ||
-    !na_fase_v ||
-    !initial_fase ||
-    !end_fase
+    !na_phase_r ||
+    !na_phase_v ||
+    !initial_phase ||
+    !end_phase
   ) {
     return res
       .status(400)
@@ -120,20 +118,18 @@ router.post('/update', auth, async (req, res) => {
 
   try {
     var bug = await Plagues.updateOne(
-      { name },
+      { user_id: req.auth_data.userId, name },
       {
         $set: {
           description: description,
-          na_fase_r: na_fase_r,
-          na_fase_v: na_fase_v,
-          initial_fase: initial_fase,
-          end_fase: end_fase,
+          na_phase_r: na_phase_r,
+          na_phase_v: na_phase_v,
+          initial_phase: initial_phase,
+          end_phase: end_phase,
           image: image
         }
       }
-    )
-      .where('user_id')
-      .equals(req.auth_data);
+    );
 
     if (bug.n == 0)
       return res.status(410).send({ message: 'Inseto Inexistente' });
