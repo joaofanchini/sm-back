@@ -15,6 +15,7 @@ router.get('/', auth, async (req, res) => {
 
     return res.json(bug);
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro na Consulta de Insetos' });
   }
 });
@@ -30,6 +31,7 @@ router.get('/plague/:name', auth, async (req, res) => {
 
     return res.json(bug);
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro na Consulta de Insetos' });
   }
 });
@@ -74,8 +76,8 @@ router.post('/create', auth, async (req, res) => {
 
     return res.status(201).json(bug);
   } catch (err) {
-    if (err)
-      return res.status(500).json({ error: 'Erro no Cadastro de Inseto' });
+    console.log(err);
+    return res.status(500).json({ error: 'Erro no Cadastro de Inseto' });
   }
 });
 router.post('/delete', auth, async (req, res) => {
@@ -89,6 +91,7 @@ router.post('/delete', auth, async (req, res) => {
 
     return res.status(200).json({ message: 'Inseto Excluído' });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro ao Excluir Inseto' });
   }
 });
@@ -137,6 +140,7 @@ router.post('/update', auth, async (req, res) => {
 
     return res.status(200).json({ message: 'Inseto Alterado' });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro ao Alterar Inseto' });
   }
 });

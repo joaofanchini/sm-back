@@ -15,6 +15,7 @@ router.get('/', auth, async (req, res) => {
 
     return res.json(pesticide);
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro na Consulta de Pesticidas' });
   }
 });
@@ -33,6 +34,7 @@ router.get('/pesticide/:name', auth, async (req, res) => {
 
     return res.json(pesticide);
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro na Consulta de Pesticidas' });
   }
 });
@@ -60,8 +62,8 @@ router.post('/create', auth, async (req, res) => {
 
     return res.status(201).json(pesticide);
   } catch (err) {
-    if (err)
-      return res.status(500).json({ error: 'Erro no Cadastro de Pesticida' });
+    console.log(errs);
+    return res.status(500).json({ error: 'Erro no Cadastro de Pesticida' });
   }
 });
 router.post('/delete', auth, async (req, res) => {
@@ -103,6 +105,7 @@ router.post('/update', auth, async (req, res) => {
 
     return res.status(200).json({ message: 'Pesticida Alterado' });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ error: 'Erro ao Alterar Pesticida' });
   }
 });
