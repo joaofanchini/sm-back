@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Plagues = require('../model/plagues.js');
 const auth = require('../middleware/auth.js');
+
+const Plagues = require('../model/plagues.js');
 
 //FUNÇÕES PRICIPAIS
 

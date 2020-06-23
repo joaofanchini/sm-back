@@ -50,3 +50,5 @@ const PlatationsSchema = new Schema({
   ],
   datecreated: { type: Date, default: Date.now }
 });
+
+module.exports = mongoose.model('Plantations', PlatationsSchema);

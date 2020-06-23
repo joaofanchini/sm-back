@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Pesticide = require('../model/pesticides.js');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth.js');
+
+const Pesticide = require('../model/pesticides.js');
 
 //FUNÇÕES PRICIPAIS
 
