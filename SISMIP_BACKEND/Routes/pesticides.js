@@ -9,88 +9,102 @@ const auth = require('../middleware/auth.js');
 
 router.get('/', auth, async (req, res) => {
   try {
-    var pesticide = await Pesticide.find({});
+    var pesticide = await Pesticide.find({ user_id: req.auth_data.userId });
 
     if (pesticide.length == 0)
-      return res.status(404).send({ message: 'Nenhum Pesticida Cadastrado' });
+      return res.status(404).json({ message: 'Nenhum Pesticida Cadastrado' });
 
-    return res.send(pesticide);
+    return res.json(pesticide);
   } catch (err) {
-    return res.status(500).send({ error: 'Erro na Consulta de Pesticidas' });
+    return res.status(500).json({ error: 'Erro na Consulta de Pesticidas' });
   }
 });
 
-router.get('/pesticide', auth, async (req, res) => {
-  const { name } = req.body;
+router.get('/pesticide/:name', auth, async (req, res) => {
+  const { name } = req.params.name;
 
   try {
-    var pesticide = await Pesticide.findOne({ name });
+    var pesticide = await Pesticide.findOne({
+      user_id: req.auth_data.userId,
+      name
+    });
 
     if (!pesticide)
-      return res.status(404).send({ message: 'Nenhum Pesticida Encontrado' });
+      return res.status(404).json({ message: 'Nenhum Pesticida Encontrado' });
 
-    return res.send(pesticide);
+    return res.json(pesticide);
   } catch (err) {
-    return res.status(500).send({ error: 'Erro na Consulta de Pesticidas' });
+    return res.status(500).json({ error: 'Erro na Consulta de Pesticidas' });
   }
 });
 
 router.post('/create', auth, async (req, res) => {
-  const { name, description, volum } = req.body;
+  const { name, description, price_per_volume } = req.body;
 
-  if (!name || !description || !volum) {
+  if (!name || !description || !price_per_volume) {
     return res
       .status(400)
-      .send({ error: 'Dados inseridos invalidos e/ou insuficientes' });
+      .json({ error: 'Dados inseridos invalidos e/ou insuficientes' });
   }
   try {
-    if (await Pesticide.findOne({ name }))
-      return res.status(400).send({ error: 'Pesticida já cadastrado' });
+    if (await Pesticide.findOne({ user_id: req.auth_data.userId, name }))
+      return res.status(400).json({ error: 'Pesticida já cadastrado' });
 
-    var pesticide = await Pesticide.create(req.body);
+    let pesticideEntity = {
+      user_id: req.auth_data.userId,
+      name,
+      description,
+      price_per_volume
+    };
 
-    return res.status(201).send(pesticide);
+    var pesticide = await Pesticide.create(pesticideEntity);
+
+    return res.status(201).json(pesticide);
   } catch (err) {
     if (err)
-      return res.status(500).send({ error: 'Erro no Cadastro de Pesticida' });
+      return res.status(500).json({ error: 'Erro no Cadastro de Pesticida' });
   }
 });
 router.post('/delete', auth, async (req, res) => {
   const { name } = req.body;
 
   try {
-    var pesticide = await Pesticide.deleteOne({ name });
+    var pesticide = await Pesticide.deleteOne({
+      user_id: req.auth_data.userId,
+      name
+    });
 
-    if (esticide.deletedCount == 0)
-      return res.status(410).send({ message: 'Pesticida Inexistente' });
+    if (pesticide.deletedCount == 0)
+      return res.status(410).json({ message: 'Pesticida Inexistente' });
 
-    return res.status(200).send({ message: 'Pesticida Excluído' });
+    return res.status(200).json({ message: 'Pesticida Excluído' });
   } catch (err) {
-    return res.status(500).send({ error: 'Erro ao Excluir Pesticida' });
+    console.log(err);
+    return res.status(500).json({ error: 'Erro ao Excluir Pesticida' });
   }
 });
 
 router.post('/update', auth, async (req, res) => {
-  const { name, description, volum, price } = req.body;
+  const { name, description, price_per_volume } = req.body;
 
-  if (!name || !description || !volum || !price) {
+  if (!name || !description || !price_per_volume) {
     return res
       .status(400)
-      .send({ error: 'Dados inseridos invalidos e/ou insuficientes' });
+      .json({ error: 'Dados inseridos invalidos e/ou insuficientes' });
   }
 
   try {
     var pesticide = await Pesticide.updateOne(
-      { name },
-      { $set: { description: description, volum: volum, price: price } }
+      { user_id: req.auth_data.userId, name },
+      { $set: { description: description, price_per_volume: price_per_volume } }
     );
 
     if (pesticide.n == 0)
-      return res.status(410).send({ message: 'Pesticida Inexistente' });
+      return res.status(410).json({ message: 'Pesticida Inexistente' });
 
-    return res.status(200).send({ message: 'Pesticida Alterado' });
+    return res.status(200).json({ message: 'Pesticida Alterado' });
   } catch (err) {
-    return res.status(500).send({ error: 'Erro ao Alterar Pesticida' });
+    return res.status(500).json({ error: 'Erro ao Alterar Pesticida' });
   }
 });
 
