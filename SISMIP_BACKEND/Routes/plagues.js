@@ -13,7 +13,7 @@ router.get('/', auth, async (req, res) => {
     if (bug.length == 0)
       return res.status(404).json({ message: 'Nenhum Inseto Cadastrado' });
 
-    return res.send(bug);
+    return res.json(bug);
   } catch (err) {
     return res.status(500).json({ error: 'Erro na Consulta de Insetos' });
   }

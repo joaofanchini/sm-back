@@ -5,7 +5,7 @@ const PlatationsSchema = new Schema({
   user_id: { type: Schema.Types.ObjectId, ref: 'Users' },
   name: { type: String, required: true },
   area: { type: Number, required: true },
-  localtion: {
+  location: {
     street: { type: String },
     number: { type: Number },
     neighborhood: { type: String },
@@ -32,17 +32,18 @@ const PlatationsSchema = new Schema({
               datecreated: { type: Date, default: Date.now }
             }
           ],
-          pesticides_applied: [
-            {
-              pesticide_id: {
-                type: Schema.Types.ObjectId,
-                ref: 'Pesticides',
-                required: true
-              },
-              volume_applied: { type: Number, required: true }
-            }
-          ],
+          defoliated_plants: { type: String, required: true },
           datecreated: { type: Date, default: Date.now }
+        }
+      ],
+      pesticides_applied: [
+        {
+          pesticide_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'Pesticides',
+            required: true
+          },
+          volume_applied: { type: Number, required: true }
         }
       ],
       datecreated: { type: Date, default: Date.now }

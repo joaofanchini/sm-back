@@ -43,6 +43,7 @@ const IndexRoute = require('./Routes/index.js');
 const UsersRoute = require('./Routes/users.js');
 const PlaguesRoute = require('./Routes/plagues.js');
 const PesticidesRoute = require('./Routes/pesticides.js');
+const PlantationsRoute = require('./Routes/plantations.js');
 
 const port = process.env.PORT || 3000;
 
@@ -50,6 +51,7 @@ app.use('/', IndexRoute);
 app.use('/users', UsersRoute);
 app.use('/plagues', PlaguesRoute);
 app.use('/pesticides', PesticidesRoute);
+app.use('/plantations', PlantationsRoute);
 
 app.listen(port, () => {
   console.log(`Aplicação iniciada na porta :${port}`);
