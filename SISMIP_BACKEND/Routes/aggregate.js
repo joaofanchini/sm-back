@@ -4,10 +4,11 @@ const auth = require('../middleware/auth.js');
 
 const Plantations = require('../model/platations');
 const Plagues = require('../model/plagues');
+const Pesticides = require('../model/pesticides');
 
 // FUNÇÕES PRINCIPAIS
 
-router.post('/aggregate/plague', auth, async (req, res) => {
+router.post('/sampling', auth, async (req, res) => {
   let userId = req.auth_data.userId;
   let {
     name_plantation,
@@ -52,7 +53,7 @@ router.post('/aggregate/plague', auth, async (req, res) => {
 
     if (plaguesFounded.length != plagues.length) {
       return res
-        .status(404)
+        .status(400)
         .json({ message: 'Alguma praga enviada não encontrada/cadastrada' });
     }
 
@@ -65,6 +66,60 @@ router.post('/aggregate/plague', auth, async (req, res) => {
             current_plantation_phase,
             plagues
           }
+        }
+      }
+    );
+
+    return res.status(201).json(plantationUpdated);
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ error: 'Erro na Agregação de Dados de Amostragem' });
+  }
+});
+
+router.post('/pesticides', auth, async (req, res) => {
+  let userId = req.auth_data.userId;
+  let { name_plantation, pesticides: pesticideDto } = req.body;
+
+  if (
+    !name_plantation ||
+    !pesticideDto ||
+    pesticideDto.length == 0 ||
+    pesticideDto.some(p => !p.pesticide_id || !p.volume_applied)
+  ) {
+    return res
+      .status(400)
+      .json({ error: 'Dados inseridos invalidos e/ou insuficientes' });
+  }
+
+  try {
+    let plantation = await Plantations.findOne({
+      user_id: userId,
+      name: name_plantation
+    });
+
+    if (plantation == null) {
+      return res.status(404).json({ message: 'Plantação não encontrada' });
+    }
+
+    let pesticidesFounded = await Pesticides.find({
+      user_id: userId,
+      _id: { $in: pesticideDto.map(p => p.pesticide_id) }
+    });
+
+    if (pesticidesFounded.length != pesticideDto.length) {
+      return res
+        .status(400)
+        .json({ message: 'Algum pesticida enviada não encontrada/cadastrada' });
+    }
+
+    let plantationUpdated = await Plantations.updateOne(
+      { _id: plantation._id },
+      {
+        $push: {
+          pesticides_applied: pesticideDto
         }
       }
     );

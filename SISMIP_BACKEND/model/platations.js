@@ -38,8 +38,7 @@ const PlatationsSchema = new Schema({
             ref: 'Plagues',
             required: true
           },
-          quantity: { type: Number, required: true },
-          datecreated: { type: Date, default: Date.now }
+          quantity: { type: Number, required: true }
         }
       ],
       defoliated_plants: { type: String, required: true },
@@ -53,7 +52,8 @@ const PlatationsSchema = new Schema({
         ref: 'Pesticides',
         required: true
       },
-      volume_applied: { type: Number, required: true }
+      volume_applied: { type: Number, required: true },
+      datecreated: { type: Date, default: Date.now }
     }
   ],
   datecreated: { type: Date, default: Date.now }
