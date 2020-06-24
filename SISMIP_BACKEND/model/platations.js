@@ -24,7 +24,7 @@ const PlatationsSchema = new Schema({
           _id: {
             type: Schema.Types.ObjectId,
             default: mongoose.Types.ObjectId(),
-            required: TextTrackCue
+            required: true
           },
           plagues: [
             {
