@@ -23,15 +23,15 @@ router.get('/plantation/:name', auth, async (req, res) => {
   let name = req.params.name;
 
   try {
-    var bug = await Plantations.findOne({
+    var planatation = await Plantations.findOne({
       user_id: req.auth_data.userId,
       name
     });
 
-    if (!bug)
+    if (!planatation)
       return res.status(404).json({ message: 'Nenhuma Plantação Encontrada' });
 
-    return res.json(bug);
+    return res.json(planatation);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: 'Erro na Consulta de Plantações' });
