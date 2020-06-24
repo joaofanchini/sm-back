@@ -47,6 +47,7 @@ const PlatationsSchema = new Schema({
   ],
   pesticides_applied: [
     {
+      _id: { type: Schema.Types.ObjectId, default: mongoose.Types.ObjectId() },
       pesticide_id: {
         type: Schema.Types.ObjectId,
         ref: 'Pesticides',

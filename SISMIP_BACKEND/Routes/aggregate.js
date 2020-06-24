@@ -133,4 +133,56 @@ router.post('/pesticides', auth, async (req, res) => {
   }
 });
 
+// FUNÇÕES DE DELEÇÃO
+router.post('/delete/pesticides', auth, async (req, res) => {
+  let userId = req.auth_data.userId;
+  let { name_plantation, pesticide_applied_id } = req.body;
+
+  if (!name_plantation || !pesticide_applied_id) {
+    return res
+      .status(400)
+      .json({ error: 'Dados inseridos invalidos e/ou insuficientes' });
+  }
+
+  try {
+    let plantation = await Plantations.findOne({
+      user_id: userId,
+      name: name_plantation
+    });
+
+    if (plantation == null) {
+      return res.status(400).json({ message: 'Plantação não encontrada' });
+    }
+
+    if (
+      !plantation.pesticides_applied ||
+      plantation.pesticides_applied.length == 0
+    ) {
+      return res
+        .status(400)
+        .json({ message: 'Não a nenhum pesticida aplicado a plantação' });
+    }
+
+    let pesticidesAppliedFiltered = plantation.pesticides_applied.filter(
+      p => p._id == pesticide_applied_id
+    );
+
+    if (!pesticidesAppliedFiltered || pesticidesAppliedFiltered.length == 0) {
+      return res
+        .status(400)
+        .json({ message: 'Pesticida aplicado enviado não encontrado' });
+    }
+
+    plantation.pesticides_applied.pull(pesticide_applied_id);
+    let result = await plantation.save();
+
+    return res.status(200).json(result);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: 'Erro ao deletar dados de agregação de pesticidas aplicados'
+    });
+  }
+});
+
 module.exports = router;
