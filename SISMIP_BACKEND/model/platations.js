@@ -21,6 +21,11 @@ const PlatationsSchema = new Schema({
     {
       sampling: [
         {
+          _id: {
+            type: Schema.Types.ObjectId,
+            default: mongoose.Types.ObjectId(),
+            required: TextTrackCue
+          },
           plagues: [
             {
               bug_id: {
@@ -32,8 +37,7 @@ const PlatationsSchema = new Schema({
               datecreated: { type: Date, default: Date.now }
             }
           ],
-          defoliated_plants: { type: String, required: true },
-          datecreated: { type: Date, default: Date.now }
+          defoliated_plants: { type: String, required: true }
         }
       ],
       pesticides_applied: [
