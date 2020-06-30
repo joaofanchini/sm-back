@@ -185,4 +185,46 @@ router.post('/delete/pesticides', auth, async (req, res) => {
   }
 });
 
+router.post('/delete/sampling', auth, async (req, res) => {
+  let userId = req.auth_data.userId;
+  let { name_plantation, sampling_id } = req.body;
+
+  if (!name_plantation || !sampling_id) {
+    return res
+      .status(400)
+      .json({ error: 'Dados inseridos invalidos e/ou insuficientes' });
+  }
+
+  try {
+    let plantation = await Plantations.findOne({
+      user_id: userId,
+      name: name_plantation
+    });
+
+    if (plantation == null) {
+      return res.status(400).json({ message: 'Plantação não encontrada' });
+    }
+
+    if (!plantation.samplings || plantation.samplings.length == 0) {
+      return res
+        .status(400)
+        .json({ message: 'Não a nenhuma amostragem para esta plantação' });
+    }
+
+    let samplingFiltered = plantation.samplings.filter(
+      s => s._id == sampling_id
+    );
+
+    plantation.samplings.pull(sampling_id);
+    let result = await plantation.save();
+
+    return res.status(200).json(result);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: 'Erro ao deletar dados de agregação de pesticidas aplicados'
+    });
+  }
+});
+
 module.exports = router;
