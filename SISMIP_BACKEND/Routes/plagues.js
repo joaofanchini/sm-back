@@ -38,6 +38,10 @@ router.get('/plague/:name', auth, async(req, res) => {
 
 router.get('/:id', auth, async(req, res) => {
     let id = req.params.id;
+    if (!id || id.length <= 0)
+        return res
+            .status(400)
+            .json({ error: 'Dados inseridos invalidos e/ou insuficientes' });
 
     try {
         var bug = await Plagues.findOne({ user_id: req.auth_data.userId, _id: id });
@@ -59,7 +63,8 @@ router.post('/create', auth, async(req, res) => {
         na_phase_r,
         na_phase_v,
         initial_phase,
-        end_phase
+        end_phase,
+        image
     } = req.body;
 
     if (!name ||
@@ -84,7 +89,8 @@ router.post('/create', auth, async(req, res) => {
             na_phase_r,
             na_phase_v,
             initial_phase,
-            end_phase
+            end_phase,
+            image
         };
 
         var bug = await Plagues.create(bugDto);
