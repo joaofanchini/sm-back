@@ -39,6 +39,25 @@ router.get('/pesticide/:name', auth, async (req, res) => {
   }
 });
 
+router.get('/:id', auth, async (req, res) => {
+  let id = req.params.id;
+
+  try {
+    var pesticide = await Pesticide.findOne({
+      user_id: req.auth_data.userId,
+      _id: id
+    });
+
+    if (!pesticide)
+      return res.status(404).json({ message: 'Nenhum Pesticida Encontrado' });
+
+    return res.json(pesticide);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Erro na Consulta de Pesticidas' });
+  }
+});
+
 router.post('/create', auth, async (req, res) => {
   const { name, description, price_per_volume } = req.body;
 
