@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth.js');
+const comparePhase = require('../middleware/compare.js'); 
 
 const Plantations = require('../model/platations');
 const Plagues = require('../model/plagues');
 const Pesticides = require('../model/pesticides');
+
 
 // FUNÇÕES PRINCIPAIS
 
@@ -57,6 +59,34 @@ router.post('/sampling', auth, async (req, res) => {
         .json({ message: 'Alguma praga enviada não encontrada/cadastrada' });
     }
 
+    plaguesFounded.forEach((element, index) => {
+      
+      if (comparePhase.vefPhaseEnum(element.initial_phase) >= comparePhase.vefPhaseEnum(current_plantation_phase) 
+          && comparePhase.vefPhaseEnum(element.end_phase) <= comparePhase.vefPhaseEnum(current_plantation_phase))
+      {
+        if ((comparePhase(element.initial_phase) >= 0 && comparePhase(element.initial_phase) <= 12
+            || comparePhase(element.end_phase) >= 0 && comparePhase(element.end_phase) <= 12)
+            && element.na_phase_v >= plagues[index].quantity)
+        {
+            plagues[index].warning = true;
+        }
+        else if ((comparePhase.vefPhaseEnum(element.initial_phase) >= 13 && comparePhase.vefPhaseEnum(element.initial_phase) <= 23
+            || comparePhase.vefPhaseEnum(element.end_phase) >= 13 && comparePhase.vefPhaseEnum(element.end_phase) <= 23)
+            && element.na_phase_r >= plagues[index].quantity)
+        {
+            plagues[index].warning = true;
+         }
+        else
+        {
+            plagues[index].warning = false;
+        }        
+      }
+      else
+      {
+          plagues[index].warning = false;
+      }
+    });
+
     let plantationUpdated = await Plantations.updateOne(
       { _id: plantation._id },
       {
@@ -69,6 +99,8 @@ router.post('/sampling', auth, async (req, res) => {
         }
       }
     );
+
+
 
     return res.status(201).json(plantationUpdated);
   } catch (err) {

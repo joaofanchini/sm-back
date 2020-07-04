@@ -52,6 +52,7 @@ const phaseEnum = {
   }
 };
 
+
 Object.freeze(phaseEnum);
 
 module.exports = phaseEnum;

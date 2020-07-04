@@ -38,7 +38,8 @@ const PlatationsSchema = new Schema({
             ref: 'Plagues',
             required: true
           },
-          quantity: { type: Number, required: true }
+          quantity: { type: Number, required: true },
+          warning: { type: Boolean, required: true }
         }
       ],
       defoliated_plants: { type: String, required: true },
@@ -61,3 +62,4 @@ const PlatationsSchema = new Schema({
 });
 
 module.exports = mongoose.model('Plantations', PlatationsSchema);
+1
