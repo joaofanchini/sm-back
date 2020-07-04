@@ -7,7 +7,7 @@ const Plantations = require('../model/platations');
 
 router.get('/', auth, async (req, res) => {
   try {
-    let plantations = await Plantations.find({ user_id: req.auth_data.userId });
+    let plantations = await Plantations.find({ user_id: req.auth_data.userId }).populate('samplings.plagues.plague_id');
 
     if (plantations.length == 0)
       return res.status(404).json({ message: 'Nenhuma Plantação Cadastrada' });
