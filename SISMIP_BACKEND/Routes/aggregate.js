@@ -60,9 +60,18 @@ router.post('/sampling', auth, async (req, res) => {
     }
 
     plaguesFounded.forEach((element, index) => {
+
+      console.log(index);
+      console.log(element);
       
-      if (comparePhase(element.initial_phase) >= comparePhase(current_plantation_phase) 
-          && comparePhase(element.end_phase) <= comparePhase(current_plantation_phase))
+      console.log(comparePhase(current_plantation_phase));
+      console.log(comparePhase(element.initial_phase));
+      console.log(comparePhase(element.end_phase));
+      
+      console.log('Passei por aqui');
+
+      if (comparePhase(current_plantation_phase) >= comparePhase(element.initial_phase) 
+          && comparePhase(current_plantation_phase) <= comparePhase(element.end_phase))
       {
         if ((comparePhase(element.initial_phase) >= 0 && comparePhase(element.initial_phase) <= 12
             || comparePhase(element.end_phase) >= 0 && comparePhase(element.end_phase) <= 12)
@@ -85,6 +94,11 @@ router.post('/sampling', auth, async (req, res) => {
       {
           plagues[index].warning = false;
       }
+
+      console.log('Resultado');
+      
+      console.log(plagues[index].warning);
+
     });
 
     let plantationUpdated = await Plantations.updateOne(
