@@ -61,8 +61,8 @@ router.post('/sampling', auth, async (req, res) => {
 
     plaguesFounded.forEach((element, index) => {
       
-      if (comparePhase.vefPhaseEnum(element.initial_phase) >= comparePhase.vefPhaseEnum(current_plantation_phase) 
-          && comparePhase.vefPhaseEnum(element.end_phase) <= comparePhase.vefPhaseEnum(current_plantation_phase))
+      if (comparePhase(element.initial_phase) >= comparePhase(current_plantation_phase) 
+          && comparePhase(element.end_phase) <= comparePhase(current_plantation_phase))
       {
         if ((comparePhase(element.initial_phase) >= 0 && comparePhase(element.initial_phase) <= 12
             || comparePhase(element.end_phase) >= 0 && comparePhase(element.end_phase) <= 12)
@@ -70,8 +70,8 @@ router.post('/sampling', auth, async (req, res) => {
         {
             plagues[index].warning = true;
         }
-        else if ((comparePhase.vefPhaseEnum(element.initial_phase) >= 13 && comparePhase.vefPhaseEnum(element.initial_phase) <= 23
-            || comparePhase.vefPhaseEnum(element.end_phase) >= 13 && comparePhase.vefPhaseEnum(element.end_phase) <= 23)
+        else if ((comparePhase(element.initial_phase) >= 13 && comparePhase(element.initial_phase) <= 23
+            || comparePhase(element.end_phase) >= 13 && comparePhase(element.end_phase) <= 23)
             && element.na_phase_r >= plagues[index].quantity)
         {
             plagues[index].warning = true;
