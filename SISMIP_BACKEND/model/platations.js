@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const { toArray: phaseEnum } = require('./../enums/phasesEnum');
 
 const PlatationsSchema = new Schema({
-  user_id: { type: Schema.Types.ObjectId, ref: 'Users' },
+  user_id: { type: Schema.Types.ObjectId, ref: 'Users', unique: true },
   name: { type: String, required: true },
   area: { type: Number, required: true },
   location: {
@@ -33,7 +33,7 @@ const PlatationsSchema = new Schema({
       },
       plagues: [
         {
-          plague_id: {
+          plague: {
             type: Schema.Types.ObjectId,
             ref: 'Plagues',
             required: true

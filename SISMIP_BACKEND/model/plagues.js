@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const { toArray: phasesEnum } = require('./../enums/phasesEnum');
 
 const PlaguesSchema = new Schema({
-    user_id: { type: Schema.Types.ObjectId, ref: 'Users' },
+    user_id: { type: Schema.Types.ObjectId, ref: 'Users', unique: true },
     name: { type: String, required: true, unique: true },
     description: { type: String, required: true },
     image: { data: ArrayBuffer, type: String, required: false },

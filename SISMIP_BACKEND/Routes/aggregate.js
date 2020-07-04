@@ -60,7 +60,9 @@ router.post('/sampling', auth, async (req, res) => {
     }
 
     plaguesFounded.forEach((element, index) => {
-
+      
+      //console.log()
+      
       if (comparePhase(current_plantation_phase) >= comparePhase(element.initial_phase) 
           && comparePhase(current_plantation_phase) <= comparePhase(element.end_phase))
       {
