@@ -44,7 +44,7 @@ router.get('/:id', auth, async (req, res) => {
     var planatation = await Plantations.findOne({
       user_id: req.auth_data.userId,
       _id: id
-    });
+    }).populate('samplings.plagues.plague_id');
 
     if (!planatation)
       return res.status(404).json({ message: 'Nenhuma Plantação Encontrada' });
