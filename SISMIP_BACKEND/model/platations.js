@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const { toArray: phaseEnum } = require('./../enums/phasesEnum');
 
 const PlatationsSchema = new Schema({
-  user_id: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
-  name: { type: String, required: true },
+  user_id: { type: Schema.Types.ObjectId, ref: 'Users', required: true, unique: true },
+  name: { type: String, required: true, unique: true},
   area: { type: Number, required: true },
   location: {
     street: { type: String },
