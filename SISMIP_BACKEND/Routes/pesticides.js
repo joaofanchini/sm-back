@@ -81,7 +81,7 @@ router.post('/create', auth, async (req, res) => {
 
     return res.status(201).json(pesticide);
   } catch (err) {
-    console.log(errs);
+    console.log(err);
     return res.status(500).json({ error: 'Erro no Cadastro de Pesticida' });
   }
 });
