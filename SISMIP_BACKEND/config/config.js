@@ -6,14 +6,14 @@ const config = () =>{
             return{
                 bd_string: 'mongodb+srv://user_adm:TjZQmAcPQm5HxNlY@sismip-db-iyerz.gcp.mongodb.net/dev?retryWrites=true',
                 jwt_pass: 'zJ$&FvsWlE',
-                jwt_expires_in: '1h'
+                jwt_expires_in: '3h'
             }
 
         case 'hml':
             return{
                 bd_string: 'mongodb+srv://user_adm:TjZQmAcPQm5HxNlY@sismip-db-iyerz.gcp.mongodb.net/hml?retryWrites=true',
                 jwt_pass: 'zJ$&FvsWlE',
-                jwt_expires_in: '5h'               
+                jwt_expires_in: '8h'               
             }
 
         case 'prod':
